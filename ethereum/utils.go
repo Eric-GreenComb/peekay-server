@@ -1,19 +1,12 @@
 package ethereum
 
 import (
-	"encoding/hex"
-	// "errors"
 	"fmt"
 	"math/big"
 	"strings"
 
 	"github.com/Eric-GreenComb/peekay-server/bean"
 )
-
-// TrimLeftZeros TrimLeftZeros
-func TrimLeftZeros(str string) string {
-	return strings.TrimLeft(strings.TrimPrefix(str, "0x"), "0")
-}
 
 // ParseFomoPlayerInfo ParseFomoPlayerInfo
 func ParseFomoPlayerInfo(str string) (bean.FomoPlayerInfo, error) {
@@ -31,8 +24,7 @@ func ParseFomoPlayerInfo(str string) (bean.FomoPlayerInfo, error) {
 	_fomoPlayerInfo.PlayerID = bigInt1
 
 	_data2 := _str[64:128]
-	_hex2byte, _ := hex.DecodeString(_data2)
-	_fomoPlayerInfo.PlayerName = strings.Trim(string(_hex2byte), " ")
+	_fomoPlayerInfo.PlayerName, _ = ErasureHexRight0(_data2)
 
 	_data3 := _str[128:192]
 	bigInt3 := new(big.Int)

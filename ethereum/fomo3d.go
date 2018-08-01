@@ -2,7 +2,6 @@ package ethereum
 
 import (
 	"encoding/hex"
-	"fmt"
 	"github.com/ethereum/go-ethereum"
 	ethcommon "github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -13,16 +12,14 @@ import (
 func GetPlayerInfoByAddress(conAddr, addr string) (string, error) {
 	_client := Clients.Eth
 
-	_conAddr := "0x51A5271Ec514c3065d9de2D8E95051989f7D53AB"
-
 	_method := crypto.Keccak256([]byte("getPlayerInfoByAddress(address)"))[:4]
 
-	_addr := padleft0(addr)
+	_addr := PadLeft0(addr)
 
 	_arguments, _ := hex.DecodeString(_addr)
 	_input := append(_method, _arguments...)
 
-	_to := ethcommon.HexToAddress(_conAddr)
+	_to := ethcommon.HexToAddress(conAddr)
 
 	var (
 		msg = ethereum.CallMsg{To: &_to, Data: _input}
@@ -80,8 +77,4 @@ func toCallArg(msg ethereum.CallMsg) interface{} {
 		arg["gasPrice"] = (*hexutil.Big)(msg.GasPrice)
 	}
 	return arg
-}
-
-func padleft0(addr string) string {
-	return fmt.Sprintf("%064s", addr)
 }
